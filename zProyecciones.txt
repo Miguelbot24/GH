@@ -1,0 +1,43 @@
+- Añadir un panel de sistema de vigilancia biomédica incluyendo
+    Disposición horizontal:
+    La pantalla se organiza en una fila de recuadros alineados horizontalmente, cada uno representando a un paciente.
+
+    Identificación del paciente:
+    Cada recuadro incluye un identificador único (nombre, código o número de cama) junto a un ícono o avatar.
+
+    Estado visual codificado por color:
+
+    Verde: OK (paciente estable, parámetros dentro de rango normal).
+    Rojo: CRÍTICO (paciente con valores fuera de rango, requiere atención inmediata).
+    Gris: FALLECIDO (sin actividad vital registrada).
+    Blanco: NO DATA / DESCONECTADO (monitor apagado o sin señal).
+
+    Indicadores dinámicos:
+    Cada recuadro muestra gráficas en tiempo real (líneas de ritmo cardíaco, curvas de oxigenación, etc.) que cambian según los datos recibidos.
+
+    Parámetros biomédicos:
+    Dentro de cada recuadro se listan valores clave:
+
+    Frecuencia cardíaca (HR)
+    Frecuencia respiratoria (RR)
+    Saturación de oxígeno (SpO₂)
+    Presión arterial (PA)
+    Temperatura
+
+    Cada recuadro incluye un botón o enlace con etiquetas como:
+    “Datos completos”
+    “Ver más”  
+    Al hacer clic, se abre una página aparte (ej. PDF dinámico) con:
+    Resultados detallados de exámenes médicos actualizados.
+    Historial clínico del paciente (consultas previas, tratamientos, evolución).
+    
+    Alertas y notificaciones:
+    Cuando un valor excede los límites establecidos, el recuadro cambia de color automáticamente y puede emitir una señal visual (parpadeo) o sonora.
+
+    Elementos técnicos adicionales:
+    En la parte inferior de la interfaz se pueden incluir:
+
+    Fecha y hora del registro
+    Código del sistema o versión del software
+    Indicadores de conexión/red
+    Sección de acceso a datos completos  

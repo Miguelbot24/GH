@@ -1,0 +1,12 @@
+El proyecto se llama Gestión Hospitalaria(GH).
+GH tiene el objetivo de reducir los tiempos de espera y mejorar la calidad de atención de los pacientes.
+
+Por ello el proyecto consiste en tres puntos importantes:
+
+- Sistema de colas para la atención de pacientes internados para velar por su comodidad para una óptima recuperación.
+- Sistema de monitoreo biomédico
+- Sistema de notificaciones en el área de emergencias con indicaciones inmediatas cuando finalice la atencion para la poner a 
+    disposición a los médicos para una siguiente atención.
+
+La aplicación de estos puntos considera el registro de pacientes con un ID de paciente.
+Se debe cumplir los 4 pilares de programación orientada a objetos: abstracción, encapsulamiento, herencia y polimorfismo.
