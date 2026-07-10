@@ -79,7 +79,7 @@ EGRESOS
 
 ```bash
 # Clonar repositorio
-git clone <url-del-repo>
+git clone https://github.com/Miguelbot24/GH.git
 cd ProyectoPOO
 
 # Instalar dependencias
