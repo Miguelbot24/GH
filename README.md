@@ -102,4 +102,4 @@ python GH/main.py
 
 ## Licencia
 
-Proyecto académico — Facultad de Ingeniería, 2026.
+Proyecto académico — Facultad de Ingeniería Electrica y Electrónica, 2026.
