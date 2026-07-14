@@ -44,7 +44,7 @@ GH/
 
 ```
 INICIAR SISTEMA
-  → Generar 24 pacientes de sala + 10 de emergencia (datos coherentes)
+  → Generar 24 pacientes de sala + 10 de emergencia
   → MonitorSignos evalúa estados clínicos cada 5 segundos
   → Panel de Selección: Hospitalización | Emergencias | Egresos
 
