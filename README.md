@@ -80,7 +80,7 @@ EGRESOS
 ```bash
 # Clonar repositorio
 git clone https://github.com/Miguelbot24/GH.git
-cd ProyectoPOO
+cd GH
 
 # Instalar dependencias
 pip install customtkinter pillow fpdf2
