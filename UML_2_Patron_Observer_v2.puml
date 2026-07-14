@@ -1,0 +1,135 @@
+@startuml Diagrama2_Patron_Observer_v2
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam DefaultFontName "Segoe UI"
+skinparam DefaultFontSize 12
+skinparam ClassFontSize 13
+
+title <size:16><b>Sistema de Monitoreo y Alertas</b></size>\n<size:11>¿Cómo funciona el patrón Observer en el proyecto?</size>
+
+' ================================================================
+'  SUJETO (PUBLISHER)
+' ================================================================
+
+class MonitorSignos {
+  - _pacientes : dict
+  - _observadores : list
+  - _historial_cambios : list
+  --
+  registrar_observador(callback) : None
+  evaluar_todos() : list
+  simular_tick() : list
+}
+
+' ================================================================
+'  EVENTO (DTO que viaja por el canal)
+' ================================================================
+
+class CambioEstado <<value object>> {
+  + paciente : Paciente
+  + estado_anterior : str
+  + estado_nuevo : str
+  + momento : datetime
+  --
+  es_agravamiento() : bool
+  es_mejoria() : bool
+}
+
+' ================================================================
+'  OBSERVADOR (SUBSCRIBER)
+' ================================================================
+
+class Notificador {
+  - _notificaciones : list
+  - _sonido_activado : bool
+  - _callback_visual : callable
+  --
+  recibir_cambio(cambio : CambioEstado) : None
+  detener_alarma_sala(id_paciente) : None
+  alertas_criticas() : list
+}
+
+' ================================================================
+'  RESULTADO (creado por el observador)
+' ================================================================
+
+class Alerta <<value object>> {
+  # _tipo : str
+  # _mensaje : str
+  # _paciente : Paciente
+  # _atendida : bool
+  --
+  es_critica() : bool
+  marcar_atendida() : None
+}
+
+' ================================================================
+'  REFERENCIA AL DOMINIO (sin mostrar sus detalles)
+' ================================================================
+
+class Paciente {
+  --
+  + estado : str
+  + signos_vitales : SignosVitales
+}
+
+' ================================================================
+'  FLUJO OBSERVER
+' ================================================================
+
+' (1) Monitor detecta cambio y crea el DTO
+MonitorSignos ..> CambioEstado : <b>1</b>  crea
+
+' (2) Monitor notifica a TODOS los observadores registrados
+'     Esta es la relacion CORE del patron: asociacion, no dependencia
+MonitorSignos --> Notificador : <b>2</b>  notifica\nrecibir_cambio()
+
+' (3) Notificador clasifica el cambio y crea una Alerta
+Notificador ..> Alerta : <b>3</b>  crea
+
+' (4) Notificador emite alarma y callback visual
+Notificador ..> Paciente : <b>4</b>  referencia\npara identificar paciente
+
+' ================================================================
+'  NOTAS
+' ================================================================
+
+note right of MonitorSignos #FFF3E0
+  <b>Sujeto (Publisher)</b>
+  Evalúa signos cada 5 segundos.
+  No conoce al Notificador.
+  Solo mantiene una lista de callables.
+end note
+
+note right of Notificador #FFEBEE
+  <b>Observador (Subscriber)</b>
+  Recibe CambioEstado.
+  Crea Alerta, emite sonido,
+  invoca callback visual (GUI).
+end note
+
+note bottom of MonitorSignos #FFFDE7
+  <b>Interfaz Observer implícita</b>
+  En Python, cualquier callable con firma
+  (CambioEstado) → None actúa como Observer.
+  No requiere clase abstracta (duck typing).
+  Disparado externamente por SimuladorEmergencia.
+end note
+
+' ================================================================
+'  LEYENDA
+' ================================================================
+
+legend bottom right
+  <b>Patrón:</b> Observer (Publisher-Subscriber)
+  <b>Beneficio:</b> Desacoplamiento.
+  El Sujeto no conoce a sus Observadores.
+  Agregar un canal (email, SMS, log)
+  solo requiere registrar un callback.
+  <b>Cero cambios en el Monitor.</b>
+endlegend
+
+@enduml

@@ -1,0 +1,169 @@
+@startuml Diagrama1_Modelo_Dominio_v2
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundCorner 8
+skinparam DefaultFontName "Segoe UI"
+skinparam DefaultFontSize 12
+skinparam ClassFontSize 13
+
+title <size:16><b>Modelo del Dominio — Gestión Hospitalaria</b></size>\n<size:11>¿Cómo fue modelado el hospital con POO?</size>
+
+' ================================================================
+'  JERARQUIA 1: PACIENTES
+'  Abstracción + Herencia + Polimorfismo
+' ================================================================
+
+abstract class Paciente {
+  # _id_paciente : str
+  # _nombre : str
+  # _signos_vitales : SignosVitales
+  # _estado : str
+  --
+  {abstract} calcular_estado() : str
+  actualizar_estado() : str
+  marcar_egreso(tipo) : None
+  resumen() : dict
+}
+
+class PacienteSala {
+  # _numero_cama : int
+  # _planta : str
+  --
+  calcular_estado() : str
+  resumen() : dict
+}
+
+class PacienteEmergencia {
+  # _prioridad_admin : int
+  # _motivo_consulta : str
+  --
+  calcular_estado() : str
+  tiempo_espera_legible() : str
+}
+
+Paciente <|-- PacienteSala
+Paciente <|-- PacienteEmergencia
+
+' ================================================================
+'  JERARQUIA 2: PERSONAL HOSPITALARIO
+'  Abstracción + Herencia + Polimorfismo (segundo dominio)
+' ================================================================
+
+abstract class PersonalHospital {
+  # _id_empleado : str
+  # _nombre : str
+  # _disponible : bool
+  --
+  {abstract} atender_paciente(p : Paciente) : str
+  marcar_ocupado() : None
+  marcar_disponible() : None
+}
+
+class Doctor {
+  # _especialidad : str
+  --
+  atender_paciente(p : Paciente) : str
+}
+
+class Enfermero {
+  # _sector : str
+  --
+  atender_paciente(p : Paciente) : str
+}
+
+PersonalHospital <|-- Doctor
+PersonalHospital <|-- Enfermero
+
+' ================================================================
+'  ENCAPSULAMIENTO + COMPOSICION + AGREGACION
+' ================================================================
+
+class SignosVitales {
+  - __frecuencia_cardiaca : float
+  - __saturacion_oxigeno : float
+  - __presion_sistolica : float
+  - __temperatura : float
+  --
+  clasificar_signo(nombre_signo, umbrales) : str
+  obtener_estado_global(umbrales) : str
+  copiar() : SignosVitales
+  a_diccionario() : dict
+}
+
+class HistorialMedico {
+  # _examenes : list
+  # _diagnosticos : list
+  # _tratamientos : list
+  # _medicamentos : list
+  --
+  agregar_examen(e : Examen) : None
+  agregar_diagnostico(descripcion) : None
+  ultimo_diagnostico() : dict
+  total_examenes() : int
+}
+
+class Examen {
+  # _tipo : str
+  # _resultado : str
+  # _fecha : datetime
+  --
+  tipo() : str
+  resultado() : str
+}
+
+' ================================================================
+'  RELACIONES
+' ================================================================
+
+Paciente "1" *-- "1" SignosVitales
+Paciente "1" o-- "0..1" HistorialMedico
+HistorialMedico "1" *-- "0..*" Examen
+PersonalHospital ..> Paciente : atiende
+
+' ================================================================
+'  NOTAS PEDAGOGICAS
+' ================================================================
+
+note right of SignosVitales #C8E6C9
+  <b>ENCAPSULAMIENTO</b>
+  Atributos con __ (name mangling).
+  Python impide acceso directo.
+  Setters validan rangos fisiológicos.
+end note
+
+note bottom of PacienteSala #E8F5E9
+  <b>POLIMORFISMO</b>
+  Mismo método calcular_estado(),
+  lógica distinta por subclase.
+  Sala: ESTABLE / PRUDENTE / ATENCIÓN
+  Emergencia: CRÍTICO / NO_CRÍTICO
+end note
+
+note bottom of Doctor #E8F5E9
+  <b>POLIMORFISMO</b>
+  Doctor diagnostica.
+  Enfermero monitorea.
+  Mismo método, propósito distinto.
+end note
+
+' ================================================================
+'  LEYENDA
+' ================================================================
+
+legend bottom right
+  <b>Pilares POO demostrados</b>
+  Abstracción: Paciente, PersonalHospital
+  Encapsulamiento: __atributos en SignosVitales
+  Herencia: 4 subclases de 2 ABCs
+  Polimorfismo: calcular_estado(), atender_paciente()
+  ----
+  <b>Relaciones</b>
+  △ — Herencia (ES-UN)
+  ◆ — Composición (crea y posee)
+  ◇ — Agregación (asigna externamente)
+  ··> — Dependencia (usa como parámetro)
+endlegend
+
+@enduml

@@ -1,0 +1,107 @@
+@startuml Diagrama3_Arquitectura_v2
+
+skinparam shadowing false
+skinparam roundCorner 10
+skinparam DefaultFontName "Segoe UI"
+skinparam DefaultFontSize 13
+skinparam PackageFontSize 14
+skinparam ArrowColor #555555
+skinparam PackageBorderThickness 2
+skinparam nodesep 60
+skinparam ranksep 40
+
+title <size:16><b>Arquitectura del Proyecto — Gestión Hospitalaria</b></size>\n<size:11>¿Cómo está organizado el código en capas y paquetes?</size>
+
+' ================================================================
+'  PAQUETES (sin rectangles internos — UML limpio)
+' ================================================================
+
+package "modelos" as modelos #E8F5E9 {
+}
+
+package "datos" as datos #FFF3E0 {
+}
+
+package "alertas" as alertas #FFEBEE {
+}
+
+package "interfaz" as interfaz #E3F2FD {
+}
+
+package "utilidades" as utilidades #F3E5F5 {
+}
+
+' ================================================================
+'  PUNTO DE ENTRADA (no es un paquete — es un módulo raíz)
+' ================================================================
+
+rectangle "main.py" as main_entry <<entry point>> #CFD8DC
+
+' ================================================================
+'  CONFIGURACION TRANSVERSAL
+' ================================================================
+
+rectangle "config.py" as config_file <<constantes>> #FFF9C4
+
+' ================================================================
+'  DEPENDENCIAS
+' ================================================================
+
+' main depende de todo
+main_entry --> interfaz
+main_entry --> alertas
+main_entry --> datos
+main_entry --> utilidades
+main_entry --> modelos
+
+' capa superior depende de modelos
+interfaz --> modelos : lee
+alertas --> modelos : monitorea
+datos --> modelos : crea
+utilidades --> modelos : exporta
+
+' ================================================================
+'  NOTAS
+' ================================================================
+
+note bottom of modelos #C8E6C9
+  <b>Capa base</b>
+  Sin dependencias internas.
+  Probable de forma aislada.
+end note
+
+note right of main_entry #CFD8DC
+  <b>Orquestador</b>
+  Único punto donde convergen
+  todas las capas.
+  Comunicación por callbacks.
+end note
+
+note bottom of config_file #FFF9C4
+  <b>Transversal</b>
+  Importado por todos los paquetes.
+  Se omite en las flechas por claridad.
+end note
+
+' ================================================================
+'  LEYENDA
+' ================================================================
+
+legend bottom right
+  <b>Convención</b>
+  Flecha →  "importa a / depende de"
+  ----
+  <b>Flujo de dependencias</b>
+  main → todas las capas
+  interfaz → modelos
+  alertas → modelos
+  datos → modelos
+  utilidades → modelos
+  modelos → nada (capa base)
+  ----
+  <b>Comunicación entre capas</b>
+  Callbacks y Observer.
+  Sin imports cruzados.
+endlegend
+
+@enduml

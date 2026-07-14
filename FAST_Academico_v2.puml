@@ -1,0 +1,131 @@
+@startuml FAST_Academico_v2
+
+skinparam shadowing false
+skinparam roundCorner 10
+skinparam DefaultFontName "Segoe UI"
+skinparam DefaultFontSize 11
+skinparam ArrowColor #555555
+skinparam ArrowThickness 1.5
+skinparam nodesep 15
+skinparam ranksep 30
+
+title <size:18><b>Diagrama FAST — Gestión Hospitalaria</b></size>\n<size:12>Lectura: ← ¿POR QUÉ?  |  ¿CÓMO? →</size>
+
+' ================================================================
+'  N0 — FUNCION PRINCIPAL
+' ================================================================
+
+rectangle "<size:14><b>Optimizar\natención hospitalaria</b></size>" as N0 #2E7D32;line:2E7D32;text:FFFFFF
+
+' ================================================================
+'  N1 — FUNCIONES PRINCIPALES
+' ================================================================
+
+rectangle "<b>Gestionar\npacientes</b>" as N1_1 #1565C0;line:1565C0;text:FFFFFF
+rectangle "<b>Monitorear\nsignos vitales</b>" as N1_2 #1565C0;line:1565C0;text:FFFFFF
+rectangle "<b>Clasificar\nestado clínico</b>" as N1_3 #1565C0;line:1565C0;text:FFFFFF
+rectangle "<b>Generar\nalertas</b>" as N1_4 #C62828;line:C62828;text:FFFFFF
+rectangle "<b>Atender\nemergencias</b>" as N1_5 #E65100;line:E65100;text:FFFFFF
+rectangle "<b>Gestionar\nhospitalización</b>" as N1_6 #2E7D32;line:2E7D32;text:FFFFFF
+rectangle "<b>Registrar\negresos</b>" as N1_7 #6A1B9A;line:6A1B9A;text:FFFFFF
+
+' ================================================================
+'  N2 — SUBFUNCIONES
+' ================================================================
+
+' N1.1 → N2
+rectangle "Registrar datos\ndel paciente" as N2_1a #BBDEFB;line:1565C0
+rectangle "Asignar ubicación\nclínica" as N2_1b #BBDEFB;line:1565C0
+
+' N1.2 → N2
+rectangle "Capturar parámetros\nbiomédicos" as N2_2a #BBDEFB;line:1565C0
+rectangle "Validar rangos\nfisiológicos" as N2_2b #BBDEFB;line:1565C0
+
+' N1.3 → N2
+rectangle "Evaluar contra\numbrales por área" as N2_3a #BBDEFB;line:1565C0
+rectangle "Determinar severidad\nglobal" as N2_3b #BBDEFB;line:1565C0
+
+' N1.4 → N2
+rectangle "Detectar cambios\nde estado" as N2_4a #FFCDD2;line:C62828
+rectangle "Notificar al\npersonal médico" as N2_4b #FFCDD2;line:C62828
+
+' N1.5 → N2
+rectangle "Priorizar cola\nde espera" as N2_5a #FFE0B2;line:E65100
+rectangle "Atender siguiente\npaciente" as N2_5b #FFE0B2;line:E65100
+
+' N1.6 → N2
+rectangle "Distribuir pacientes\npor sala" as N2_6a #C8E6C9;line:2E7D32
+rectangle "Estabilizar paciente\ncrítico" as N2_6b #C8E6C9;line:2E7D32
+
+' N1.7 → N2
+rectangle "Dar de alta\nmédica" as N2_7a #E1BEE7;line:6A1B9A
+rectangle "Registrar fuga" as N2_7b #E1BEE7;line:6A1B9A
+
+' ================================================================
+'  FUNCIONES DE SOPORTE (líneas punteadas)
+' ================================================================
+
+rectangle "<i>Simular escenarios\ncríticos</i>" as SOP_1 #EEEEEE;line:999999;line.dotted
+rectangle "<i>Generar ficha\nclínica</i>" as SOP_2 #EEEEEE;line:999999;line.dotted
+
+' ================================================================
+'  FLECHAS — N0 → N1 (¿CÓMO?)
+' ================================================================
+
+N0 -right-> N1_1 : <color:#2E7D32><b>¿CÓMO?</b></color>
+N0 -right-> N1_2
+N0 -right-> N1_3
+N0 -right-> N1_4
+N0 -right-> N1_5
+N0 -right-> N1_6
+N0 -right-> N1_7
+
+' ================================================================
+'  FLECHAS — N1 → N2 (¿CÓMO?)
+' ================================================================
+
+N1_1 -down-> N2_1a
+N1_1 -down-> N2_1b
+
+N1_2 -down-> N2_2a
+N1_2 -down-> N2_2b
+
+N1_3 -down-> N2_3a
+N1_3 -down-> N2_3b
+
+N1_4 -down-> N2_4a
+N1_4 -down-> N2_4b
+
+N1_5 -down-> N2_5a
+N1_5 -down-> N2_5b
+
+N1_6 -down-> N2_6a
+N1_6 -down-> N2_6b
+
+N1_7 -down-> N2_7a
+N1_7 -down-> N2_7b
+
+' ================================================================
+'  FLECHAS — SOPORTE (punteadas)
+' ================================================================
+
+N1_4 .down.> SOP_1 : <color:#999999><i>soporte</i></color>
+N1_6 .down.> SOP_2 : <color:#999999><i>soporte</i></color>
+
+' ================================================================
+'  LEYENDA
+' ================================================================
+
+legend bottom right
+  <b>Lectura del FAST</b>
+  ← <b>¿POR QUÉ?</b> existe esta función
+  → <b>¿CÓMO?</b> se logra esta función
+  ----
+  <b>Niveles</b>
+  <back:#2E7D32><color:white>  N0  </color></back> Función principal
+  <back:#1565C0><color:white>  N1  </color></back> Funciones principales
+  <back:#BBDEFB><color:#1565C0>  N2  </color></back> Subfunciones
+  <back:#EEEEEE><color:#999999>  Sop  </color></back> Funciones de soporte
+endlegend
+
+@enduml
